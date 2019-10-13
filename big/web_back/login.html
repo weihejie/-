@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>大事件-后台登录页</title>
+  <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+
+<body>
+  <div class="main_wrap">
+    <div class="header">
+      <a href="#" class="logo"><img src="images/logo.png" alt=""></a>
+      <div class="copyright">CopyRight © 2019 深圳百秀信息技术股份有限公司<br>All Rights Reserved</div>
+    </div>
+
+    <div class="login_form_con">
+      <div class="login_title"></div>
+      <form class="login_form">
+        <i class="iconfont icon-user"></i>
+        <i class="iconfont icon-key"></i>
+        <input type="text" class="input_txt" placeholder="邮箱/手机号">
+        <input type="password" class="input_pass" placeholder="密码">
+        <!-- 将按钮修改为普通按钮 -->
+        <!-- <input type="submit" class="input_sub" value="登 录"> -->
+        <input type="button" class="input_sub" value="登 录">
+      </form>
+    </div>
+
+  </div>
+
+  <script src="./js/jquery-1.12.4.min.js"></script>
+  <script src="./tool/config.js"></script>
+  <script>
+    /*
+      结构的修改：
+        如果静态页面不是我们自己制作的，我们需要考虑结构对功能的影响
+          - 我们希望使用ajax进行提交操作，需要将submit按钮更改为普通按钮
+            - 进行结构修改时，推荐将原始结构保存为注释，再重新书写结构
+          - 方式2：阻止标签的默认行为
+    */
+
+    // 功能实现：
+    // 1 给登录按钮设置点击事件
+    $('.input_sub').on('click', function () {
+      // 2 检测内容是否存在，如果不存在，阻止请求发送
+      var txt = $('.input_txt').val();
+      var pass = $('.input_pass').val();
+
+      // 可以通过字符串方法进行空格去除
+      if (txt.trim() === '' || pass.trim() === '') {
+        alert('请完整输入用户名和密码!~');
+        return;
+      }
+
+      // 3 发送请求
+      $.ajax({
+        type: 'post',
+        url: USER_LOGIN, // url地址是从config.js中获取的，要学会习惯
+        data: {
+          user_name: txt,
+          password: pass
+        },
+        success: function (res) {
+          // 4 根据服务端响应的状态进行对应操作
+          if (res.code === 200) {
+            // 跳转到首页
+            location.href = './index.html';
+          } else {
+            // 进行错误提示
+            alert('用户名或密码错误');
+          }
+        }
+      })
+    });
+
+
+
+
+
+  </script>
+</body>
+
+</html>
